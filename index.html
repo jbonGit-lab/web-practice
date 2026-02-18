@@ -8,23 +8,25 @@
 
   <style>
     :root{
-      --bg: #ffffff;
-      --text: #0b0b0f;
-      --muted: rgba(11,11,15,.62);
-      --line: rgba(11,11,15,.10);
+      --bg:#0b1020;
+      --text:#eef2ff;
+      --muted:rgba(238,242,255,.72);
+      --line:rgba(238,242,255,.12);
 
-      --card: rgba(255,255,255,.72);
-      --card-solid:#ffffff;
+      --card:rgba(255,255,255,.08);
+      --card2:rgba(255,255,255,.06);
+      --glass:rgba(10,14,28,.55);
 
-      --radius: 22px;
-      --shadow: 0 24px 70px rgba(0,0,0,.12);
-      --shadow-soft: 0 14px 40px rgba(0,0,0,.10);
+      --radius:24px;
+      --shadow: 0 24px 80px rgba(0,0,0,.55);
+      --shadow-soft: 0 16px 44px rgba(0,0,0,.40);
 
-      /* Accent (not Apple blue) */
-      --accent: #2f6df6;
-      --accent2: #19c3ff;
+      --accent:#6d28d9;  /* violet */
+      --accent2:#22d3ee; /* cyan */
+      --accent3:#34d399; /* mint */
+      --accent4:#fb7185; /* rose */
 
-      --focus: rgba(47,109,246,.28);
+      --focus:rgba(34,211,238,.28);
     }
 
     *{box-sizing:border-box}
@@ -32,110 +34,169 @@
     body{
       margin:0;
       color:var(--text);
-      background:
-        radial-gradient(900px 520px at 50% -10%, rgba(47,109,246,.12), transparent 60%),
-        radial-gradient(860px 520px at 10% 30%, rgba(25,195,255,.10), transparent 55%),
-        radial-gradient(860px 520px at 90% 35%, rgba(47,109,246,.08), transparent 55%),
-        var(--bg);
+      background: var(--bg);
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
+      overflow-x:hidden;
+    }
+
+    /* ===== Aurora background (animated, subtle) ===== */
+    .bg{
+      position: fixed;
+      inset: -20vh -20vw;
+      z-index: -2;
+      pointer-events:none;
+      background:
+        radial-gradient(900px 600px at 15% 10%, rgba(109,40,217,.45), transparent 60%),
+        radial-gradient(900px 600px at 85% 20%, rgba(34,211,238,.35), transparent 60%),
+        radial-gradient(900px 700px at 35% 90%, rgba(52,211,153,.25), transparent 60%),
+        radial-gradient(800px 600px at 95% 85%, rgba(251,113,133,.22), transparent 60%),
+        radial-gradient(1200px 900px at 50% 50%, rgba(255,255,255,.06), transparent 60%);
+      filter: blur(30px) saturate(130%);
+      transform: translate3d(0,0,0);
+      animation: drift 18s ease-in-out infinite alternate;
+      opacity: .95;
+    }
+    @keyframes drift{
+      0%   { transform: translate3d(-1.5%, -1%, 0) scale(1.02); }
+      100% { transform: translate3d( 1.5%,  1%, 0) scale(1.06); }
+    }
+
+    /* soft grain */
+    .grain{
+      position: fixed;
+      inset: 0;
+      z-index:-1;
+      pointer-events:none;
+      opacity:.08;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
     }
 
     a{color:inherit; text-decoration:none}
     a:focus-visible, button:focus-visible{
       outline:3px solid var(--focus);
       outline-offset:3px;
-      border-radius:14px;
+      border-radius:16px;
     }
 
-    .wrap{max-width: 1080px; margin:0 auto; padding: 18px 18px 72px;}
+    .wrap{max-width:1080px; margin:0 auto; padding: 18px 18px 80px;}
 
-    /* ===== Top Nav (glass) ===== */
+    /* ===== Header (glass + colored underline) ===== */
     header{
       position: sticky;
       top: 0;
-      z-index: 20;
-      border-bottom: 1px solid rgba(11,11,15,.08);
-      background: rgba(255,255,255,.72);
-      backdrop-filter: saturate(160%) blur(12px);
+      z-index: 30;
+      background: rgba(10,14,28,.55);
+      backdrop-filter: blur(14px) saturate(160%);
+      border-bottom: 1px solid rgba(238,242,255,.10);
     }
     .nav-inner{
-      max-width: 1080px;
-      margin: 0 auto;
+      max-width:1080px; margin:0 auto;
       padding: 10px 18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 14px;
+      display:flex; align-items:center; justify-content:space-between; gap: 14px;
     }
     .brand{
       display:flex; align-items:center; gap:10px;
-      min-width: 160px;
+      min-width: 170px;
     }
     .brand-mark{
       width:12px; height:12px; border-radius:999px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 10px 22px rgba(47,109,246,.20);
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      box-shadow: 0 14px 28px rgba(34,211,238,.25);
     }
-    .brand strong{
-      font-size: 14px;
-      letter-spacing: .02em;
-    }
+    .brand strong{font-size:14px; letter-spacing:.02em}
 
     .nav{
-      display:flex; align-items:center; gap: 2px;
-      color: rgba(11,11,15,.70);
+      display:flex; gap: 4px; flex-wrap:wrap;
+      color: rgba(238,242,255,.78);
       font-size: 13px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+      justify-content:flex-end;
     }
     .nav a{
-      padding: 8px 10px;
+      position: relative;
+      padding: 8px 12px;
       border-radius: 999px;
       transition: background .15s ease, transform .15s ease;
+      opacity:.9;
     }
     .nav a:hover{
-      background: rgba(11,11,15,.06);
+      background: rgba(255,255,255,.08);
       transform: translateY(-1px);
     }
-
-    .nav-cta{
-      display:flex; gap:10px; align-items:center;
+    .nav a.active{
+      background: rgba(255,255,255,.10);
+      opacity: 1;
     }
+    .nav a.active::after{
+      content:"";
+      position:absolute;
+      left:12px; right:12px; bottom:6px;
+      height:2px;
+      border-radius:999px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent3), var(--accent4));
+      opacity:.9;
+    }
+
+    .nav-cta{display:flex; gap:10px; align-items:center}
     .mini-btn{
-      border: 1px solid rgba(11,11,15,.12);
-      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(238,242,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(238,242,255,.92);
       padding: 8px 12px;
       border-radius: 999px;
       font-size: 13px;
-      font-weight: 650;
+      font-weight: 700;
       cursor:pointer;
       transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
     }
     .mini-btn:hover{
       transform: translateY(-1px);
-      box-shadow: 0 10px 22px rgba(0,0,0,.10);
+      background: rgba(255,255,255,.10);
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
     }
     .mini-btn.primary{
       border-color: transparent;
-      color:#fff;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 14px 30px rgba(47,109,246,.22);
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      box-shadow: 0 16px 38px rgba(34,211,238,.22);
+    }
+
+    /* ===== Reveal animation ===== */
+    .reveal{
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity .55s ease, transform .55s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.show{
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* ===== Hero ===== */
     .hero{
       margin-top: 18px;
-      border-radius: calc(var(--radius) + 8px);
+      border-radius: calc(var(--radius) + 10px);
       overflow:hidden;
-      border: 1px solid rgba(11,11,15,.10);
+      border: 1px solid rgba(238,242,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
       box-shadow: var(--shadow);
+      position: relative;
+    }
+    .hero::before{
+      content:"";
+      position:absolute; inset:-2px;
       background:
-        radial-gradient(1200px 700px at 50% 0%, rgba(255,255,255,.86), rgba(255,255,255,.62) 55%, rgba(255,255,255,.38)),
-        linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.55));
+        radial-gradient(900px 480px at 20% 10%, rgba(34,211,238,.18), transparent 55%),
+        radial-gradient(900px 520px at 85% 20%, rgba(109,40,217,.22), transparent 60%),
+        radial-gradient(900px 520px at 55% 110%, rgba(52,211,153,.14), transparent 55%);
+      filter: blur(18px);
+      opacity: .9;
+      pointer-events:none;
     }
     .hero-inner{
+      position: relative;
       padding: 44px 34px;
       display:grid;
       grid-template-columns: 1.2fr .8fr;
@@ -143,40 +204,37 @@
     }
     @media (max-width: 900px){
       .hero-inner{grid-template-columns:1fr; padding: 34px 20px;}
-      .nav-inner{gap:10px}
       .brand{min-width:auto}
     }
 
     .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 7px 12px;
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(11,11,15,.10);
-      background: rgba(255,255,255,.70);
-      color: rgba(11,11,15,.70);
+      border: 1px solid rgba(238,242,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(238,242,255,.80);
       font-size: 12px;
       width: fit-content;
     }
-    .badge .spark{
+    .spark{
       width: 16px; height: 16px;
       border-radius: 6px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 10px 18px rgba(47,109,246,.20);
+      background: linear-gradient(135deg, var(--accent4), var(--accent2));
+      box-shadow: 0 14px 22px rgba(251,113,133,.18);
     }
 
     h1{
       margin: 14px 0 10px;
-      font-size: clamp(34px, 4vw, 56px);
-      line-height: 1.04;
-      letter-spacing: -0.04em;
+      font-size: clamp(34px, 4vw, 60px);
+      line-height: 1.03;
+      letter-spacing: -0.05em;
     }
     .lead{
       margin:0;
-      color: var(--muted);
+      color: rgba(238,242,255,.74);
       font-size: 16px;
-      line-height: 1.85;
+      line-height: 1.9;
       max-width: 56ch;
     }
 
@@ -187,77 +245,73 @@
     }
 
     .btn{
-      border: 1px solid rgba(11,11,15,.12);
-      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(238,242,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(238,242,255,.92);
       padding: 12px 16px;
       border-radius: 999px;
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 750;
       cursor:pointer;
       transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
-      box-shadow: 0 10px 22px rgba(0,0,0,.10);
+      box-shadow: 0 12px 30px rgba(0,0,0,.30);
     }
-    .btn:hover{transform: translateY(-1px)}
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.10);
+      box-shadow: 0 18px 46px rgba(0,0,0,.35);
+    }
     .btn:active{transform: translateY(0)}
     .btn.primary{
-      color:#fff;
+      color:#05101a;
       border-color: transparent;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 16px 38px rgba(47,109,246,.22);
+      background: linear-gradient(135deg, var(--accent2), var(--accent3));
+      box-shadow: 0 18px 50px rgba(34,211,238,.18);
     }
 
     .chips{
       display:flex; gap:10px; flex-wrap:wrap;
       margin-top: 18px;
-      color: rgba(11,11,15,.62);
+      color: rgba(238,242,255,.70);
     }
     .chip{
       font-size: 12px;
       padding: 8px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(11,11,15,.10);
-      background: rgba(255,255,255,.68);
+      border: 1px solid rgba(238,242,255,.14);
+      background: rgba(255,255,255,.05);
     }
 
-    /* Right panel in hero */
+    /* Right panel */
     .hero-panel{
       border-radius: var(--radius);
-      border: 1px solid rgba(11,11,15,.10);
-      background: rgba(255,255,255,.76);
+      border: 1px solid rgba(238,242,255,.14);
+      background: rgba(255,255,255,.06);
       padding: 18px;
       box-shadow: var(--shadow-soft);
     }
     .avatar{
-      width: 62px; height: 62px;
+      width: 64px; height: 64px;
       border-radius: 18px;
       display:grid; place-items:center;
-      color:#fff;
-      font-weight: 900;
-      letter-spacing: .03em;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 18px 34px rgba(47,109,246,.22);
+      color:#071019;
+      font-weight: 950;
+      letter-spacing: .02em;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      box-shadow: 0 22px 46px rgba(34,211,238,.20);
       user-select:none;
       margin-bottom: 14px;
     }
-    .kpi{
-      display:grid;
-      gap: 10px;
-    }
+    .kpi{display:grid; gap: 10px}
     .row{
-      display:flex;
-      justify-content: space-between;
-      gap: 12px;
-      color: rgba(11,11,15,.64);
+      display:flex; justify-content: space-between; gap: 12px;
+      color: rgba(238,242,255,.70);
       font-size: 14px;
     }
-    .row strong{color: var(--text)}
-    .divider{
-      border:0;
-      border-top: 1px solid rgba(11,11,15,.10);
-      margin: 14px 0;
-    }
+    .row strong{color: rgba(238,242,255,.95)}
+    .divider{border:0; border-top: 1px solid rgba(238,242,255,.12); margin: 14px 0;}
     .hint{
-      color: rgba(11,11,15,.62);
+      color: rgba(238,242,255,.70);
       font-size: 12px;
       line-height: 1.8;
     }
@@ -266,23 +320,18 @@
       font-size: .95em;
     }
 
-    /* ===== Sections ===== */
-    section{margin-top: 34px}
+    /* Sections */
+    section{margin-top: 38px}
     .sec-title{
       display:flex; align-items:flex-end; justify-content:space-between;
-      gap: 12px; flex-wrap:wrap;
-      padding: 0 4px;
+      gap: 12px; flex-wrap:wrap; padding: 0 4px;
     }
     .sec-title h2{
       margin:0;
       font-size: 20px;
       letter-spacing: -0.02em;
     }
-    .sec-title p{
-      margin:0;
-      color: var(--muted);
-      font-size: 14px;
-    }
+    .sec-title p{margin:0; color: rgba(238,242,255,.70); font-size: 14px}
 
     /* Cards grid */
     .grid{
@@ -296,67 +345,53 @@
 
     .card{
       border-radius: var(--radius);
-      border: 1px solid rgba(11,11,15,.10);
-      background: rgba(255,255,255,.76);
-      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(238,242,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
       padding: 18px;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
+      display:flex; flex-direction:column; gap: 10px;
+      box-shadow: 0 16px 46px rgba(0,0,0,.35);
       transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+      transform-style: preserve-3d;
     }
     .card:hover{
-      transform: translateY(-2px);
-      box-shadow: var(--shadow);
-      border-color: rgba(47,109,246,.20);
+      box-shadow: 0 24px 80px rgba(0,0,0,.45);
+      border-color: rgba(34,211,238,.22);
     }
-    .card h3{
-      margin:0;
-      font-size: 16px;
-      letter-spacing: -0.01em;
-    }
-    .card p{
-      margin:0;
-      color: var(--muted);
-      line-height: 1.8;
-      font-size: 14px;
-    }
-    .meta{
-      display:flex;
-      gap: 8px;
-      flex-wrap:wrap;
-      margin-top: 2px;
-    }
+    .card h3{margin:0; font-size: 16px; letter-spacing: -0.01em}
+    .card p{margin:0; color: rgba(238,242,255,.72); line-height: 1.85; font-size: 14px}
+    .meta{display:flex; gap: 8px; flex-wrap:wrap; margin-top: 2px}
     .pill{
       font-size: 12px;
       padding: 7px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(11,11,15,.10);
-      background: rgba(255,255,255,.70);
-      color: rgba(11,11,15,.64);
+      border: 1px solid rgba(238,242,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(238,242,255,.72);
     }
     .small{
       margin-top:auto;
-      color: rgba(11,11,15,.58);
+      color: rgba(238,242,255,.66);
       font-size: 12px;
       line-height: 1.6;
     }
     .cta{
       margin-top: 10px;
       font-size: 13px;
-      font-weight: 750;
-      color: rgba(47,109,246,.95);
+      font-weight: 850;
+      background: linear-gradient(90deg, var(--accent2), var(--accent3), var(--accent4));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
       width: fit-content;
     }
     .card:hover .cta{ text-decoration: underline; }
 
-    /* Contact block */
     .contact-card{
       border-radius: var(--radius);
-      border: 1px solid rgba(11,11,15,.10);
-      background: rgba(255,255,255,.76);
-      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(238,242,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
       padding: 18px;
+      box-shadow: 0 16px 46px rgba(0,0,0,.35);
     }
     .contact-actions{display:flex; flex-wrap:wrap; gap: 12px; margin-top: 10px}
 
@@ -366,14 +401,15 @@
       left: 50%;
       bottom: 18px;
       transform: translateX(-50%);
-      background: rgba(11,11,15,.92);
-      color:#fff;
+      background: rgba(238,242,255,.92);
+      color:#071019;
       padding: 10px 12px;
       border-radius: 14px;
       font-size: 13px;
       opacity: 0;
       pointer-events: none;
       transition: opacity .2s ease, transform .2s ease;
+      box-shadow: 0 18px 50px rgba(0,0,0,.45);
     }
     .toast.show{
       opacity: 1;
@@ -381,15 +417,24 @@
     }
 
     footer{
-      margin-top: 34px;
+      margin-top: 36px;
       padding: 14px 4px;
-      color: rgba(11,11,15,.58);
+      color: rgba(238,242,255,.62);
       font-size: 12px;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .bg{animation:none}
+      .reveal{transition:none}
+      .btn, .mini-btn, .card, .nav a{transition:none}
     }
   </style>
 </head>
 
 <body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
   <header>
     <div class="nav-inner">
       <div class="brand">
@@ -398,9 +443,9 @@
       </div>
 
       <nav class="nav" aria-label="ページ内ナビ">
-        <a href="#works">Works</a>
-        <a href="#skills">Skills</a>
-        <a href="#contact">Contact</a>
+        <a href="#works" data-nav="works">Works</a>
+        <a href="#skills" data-nav="skills">Skills</a>
+        <a href="#contact" data-nav="contact">Contact</a>
       </nav>
 
       <div class="nav-cta">
@@ -412,7 +457,7 @@
 
   <div class="wrap">
     <main>
-      <section class="hero" aria-label="自己紹介">
+      <section class="hero reveal" aria-label="自己紹介">
         <div class="hero-inner">
           <div>
             <span class="badge"><span class="spark" aria-hidden="true"></span>ポートフォリオ制作中｜PRで更新</span>
@@ -420,7 +465,7 @@
             <h1>jbonGit-lab</h1>
 
             <p class="lead">
-              AI AgentとAgent Skillsを学んでいます。生成AIとVS Codeで、小さな成果物を作って公開し、
+              AI AgentとAgent Skillsを学んでいます。生成AIとVS Codeで小さな成果物を作って公開し、
               <strong>ブランチ→PR→マージ</strong>の流れで改善を積み上げています。
             </p>
 
@@ -442,20 +487,20 @@
             </p>
           </div>
 
-          <aside class="hero-panel" aria-label="プロフィール概要">
+          <aside class="hero-panel reveal" aria-label="プロフィール概要">
             <div class="avatar" aria-hidden="true">JBon</div>
 
             <div class="kpi">
               <div class="row"><span>現在</span><strong>Web制作学習中</strong></div>
               <div class="row"><span>更新方法</span><strong>ブランチ→PR→マージ</strong></div>
-              <div class="row"><span>次の目標</span><strong>UIの洗練 + 小作品の追加</strong></div>
+              <div class="row"><span>次の目標</span><strong>色味 + 動き + 小作品</strong></div>
               <div class="row"><span>連絡</span><strong>下のContactへ</strong></div>
             </div>
 
             <hr class="divider" />
 
             <div class="hint">
-              <div><strong style="color:var(--text)">置き換える場所</strong></div>
+              <div><strong style="color:rgba(238,242,255,.95)">置き換える場所</strong></div>
               <ul style="margin:8px 0 0; padding-left:18px; line-height:1.8;">
                 <li>名前（ハンドル）</li>
                 <li>紹介文</li>
@@ -467,14 +512,14 @@
         </div>
       </section>
 
-      <section id="works" aria-label="作品">
+      <section id="works" class="reveal" aria-label="作品">
         <div class="sec-title">
           <h2>Works</h2>
           <p>小さく作って、PRで改善していく</p>
         </div>
 
         <div class="grid">
-          <article class="card">
+          <article class="card tilt reveal">
             <h3>Project A：自己紹介LP</h3>
             <p>このページ。見た目と構造を整えつつ、公開しながら改善を続けます。</p>
             <div class="meta">
@@ -484,7 +529,7 @@
             <div class="cta">詳細 →</div>
           </article>
 
-          <article class="card">
+          <article class="card tilt reveal">
             <h3>Project B：料金表 + FAQ</h3>
             <p>カードUI・アコーディオン・レスポンシブの練習用に作る予定。</p>
             <div class="meta">
@@ -494,7 +539,7 @@
             <div class="cta">詳細 →</div>
           </article>
 
-          <article class="card">
+          <article class="card tilt reveal">
             <h3>Project C：ToDoミニアプリ</h3>
             <p>追加/削除/完了/フィルタ。JSの基礎と状態管理の練習。</p>
             <div class="meta">
@@ -506,16 +551,16 @@
         </div>
       </section>
 
-      <section id="skills" aria-label="スキル">
+      <section id="skills" class="reveal" aria-label="スキル">
         <div class="sec-title">
           <h2>Skills</h2>
           <p>まずは基礎を“触って”固める</p>
         </div>
 
         <div class="grid" style="grid-template-columns: 1fr;">
-          <div class="card">
+          <div class="card reveal">
             <div>
-              <strong>基礎</strong><br/>
+              <strong style="color:rgba(238,242,255,.95)">基礎</strong><br/>
               <div class="meta" style="margin-top:10px;">
                 <span class="pill">HTML構造</span>
                 <span class="pill">Flex/Grid</span>
@@ -525,9 +570,9 @@
               </div>
             </div>
 
-            <div style="margin-top:8px;">
-              <strong>次にやること（おすすめ順）</strong>
-              <ol style="margin:10px 0 0; padding-left:18px; color:var(--muted); line-height:1.9;">
+            <div style="margin-top:10px;">
+              <strong style="color:rgba(238,242,255,.95)">次にやること（おすすめ順）</strong>
+              <ol style="margin:10px 0 0; padding-left:18px; color:rgba(238,242,255,.72); line-height:1.95;">
                 <li>UIの磨き込み（余白/色/ホバー）</li>
                 <li>FAQ（アコーディオン）追加</li>
                 <li>ToDoを別ページ or 1ページ内に追加</li>
@@ -537,13 +582,13 @@
         </div>
       </section>
 
-      <section id="contact" aria-label="連絡先">
+      <section id="contact" class="reveal" aria-label="連絡先">
         <div class="sec-title">
           <h2>Contact</h2>
           <p>リンクはあとで差し替えOK</p>
         </div>
 
-        <div class="contact-card">
+        <div class="contact-card reveal">
           <p class="hint" style="margin:0;">
             下のリンクはダミーです。あなたのURLに置き換えてください（公開するなら個人メールは非推奨）。
           </p>
@@ -565,9 +610,10 @@
   <div class="toast" id="toast" role="status" aria-live="polite">コピーしました</div>
 
   <script>
-    const yearEl = document.getElementById("year");
-    yearEl.textContent = String(new Date().getFullYear());
+    // Year
+    document.getElementById("year").textContent = String(new Date().getFullYear());
 
+    // Toast
     const toast = document.getElementById("toast");
     function showToast(text){
       toast.textContent = text;
@@ -585,15 +631,62 @@
       }
     }
 
-    document.getElementById("copyUrlBtn").addEventListener("click", () => {
-      copyText(location.href, "ページURLをコピーしました");
-    });
-    document.getElementById("copyUrlBtnTop").addEventListener("click", () => {
-      copyText(location.href, "ページURLをコピーしました");
-    });
+    // Copy buttons
+    document.getElementById("copyUrlBtn").addEventListener("click", () => copyText(location.href, "ページURLをコピーしました"));
+    document.getElementById("copyUrlBtnTop").addEventListener("click", () => copyText(location.href, "ページURLをコピーしました"));
+    document.getElementById("copyEmailBtn").addEventListener("click", () => copyText("you@example.com", "メールアドレスをコピーしました"));
 
-    document.getElementById("copyEmailBtn").addEventListener("click", () => {
-      copyText("you@example.com", "メールアドレスをコピーしました");
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries){
+        if (e.isIntersecting){
+          e.target.classList.add("show");
+          io.unobserve(e.target);
+        }
+      }
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+    // Active nav on scroll (Works / Skills / Contact)
+    const navLinks = Array.from(document.querySelectorAll(".nav a[data-nav]"));
+    const sections = ["works","skills","contact"].map(id => document.getElementById(id));
+
+    const ioNav = new IntersectionObserver((entries) => {
+      const visible = entries.filter(e => e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+      if(!visible) return;
+      const id = visible.target.id;
+      navLinks.forEach(a => a.classList.toggle("active", a.dataset.nav === id));
+    }, { rootMargin: "-40% 0px -55% 0px", threshold: [0.12, 0.22, 0.35] });
+
+    sections.forEach(s => s && ioNav.observe(s));
+
+    // Card tilt (subtle)
+    const cards = document.querySelectorAll(".tilt");
+    const maxTilt = 6; // degrees
+    cards.forEach(card => {
+      let rAF = null;
+
+      function onMove(ev){
+        const rect = card.getBoundingClientRect();
+        const x = (ev.clientX - rect.left) / rect.width;
+        const y = (ev.clientY - rect.top) / rect.height;
+        const rotY = (x - 0.5) * (maxTilt * 2);
+        const rotX = (0.5 - y) * (maxTilt * 2);
+
+        if(rAF) cancelAnimationFrame(rAF);
+        rAF = requestAnimationFrame(() => {
+          card.style.transform = `perspective(900px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateY(-2px)`;
+        });
+      }
+
+      function onLeave(){
+        if(rAF) cancelAnimationFrame(rAF);
+        card.style.transform = "";
+      }
+
+      card.addEventListener("mousemove", onMove);
+      card.addEventListener("mouseleave", onLeave);
     });
   </script>
 </body>
