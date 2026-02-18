@@ -13,10 +13,6 @@
       --muted:rgba(238,242,255,.72);
       --line:rgba(238,242,255,.12);
 
-      --card:rgba(255,255,255,.08);
-      --card2:rgba(255,255,255,.06);
-      --glass:rgba(9,12,24,.55);
-
       --radius:26px;
       --shadow: 0 28px 90px rgba(0,0,0,.58);
       --shadow-soft: 0 16px 44px rgba(0,0,0,.42);
@@ -84,20 +80,6 @@
       opacity: .12;
       mask-image: radial-gradient(900px 500px at 50% 18%, black 35%, transparent 65%);
       -webkit-mask-image: radial-gradient(900px 500px at 50% 18%, black 35%, transparent 65%);
-    }
-
-    /* spotlight that follows cursor */
-    .spotlight{
-      position: fixed;
-      inset: 0;
-      z-index: -3;
-      pointer-events:none;
-      background: radial-gradient(320px 260px at var(--mx,50%) var(--my,20%),
-        rgba(34,211,238,.16),
-        transparent 60%);
-      transition: opacity .2s ease;
-      opacity: .95;
-      mix-blend-mode: screen;
     }
 
     /* grain */
@@ -222,7 +204,7 @@
     }
     .reveal.show{opacity: 1; transform: translateY(0);}
 
-    /* ===== Hero (the "wow") ===== */
+    /* ===== Hero ===== */
     .hero{
       margin-top: 18px;
       border-radius: calc(var(--radius) + 10px);
@@ -232,7 +214,6 @@
       box-shadow: var(--shadow);
       position: relative;
     }
-    /* moving light lines (subtle) */
     .hero::before{
       content:"";
       position:absolute;
@@ -371,7 +352,6 @@
       position: relative;
       overflow:hidden;
     }
-    /* subtle animated dots */
     .hero-panel::before{
       content:"";
       position:absolute;
@@ -458,6 +438,7 @@
       transform-style: preserve-3d;
       position: relative;
       overflow:hidden;
+      cursor: pointer;
     }
     .card::before{
       content:"";
@@ -507,7 +488,6 @@
       position: relative;
       z-index: 1;
     }
-    .card:hover .cta{ text-decoration: underline; }
 
     .contact-card{
       border-radius: var(--radius);
@@ -562,13 +542,147 @@
       to  { width: 540px; height: 540px; opacity: 0; }
     }
 
+    /* ===== Modal ===== */
+    .modal{
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: none;
+    }
+    .modal.open{display:block;}
+    .modal-backdrop{
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,.62);
+      backdrop-filter: blur(10px) saturate(120%);
+      opacity: 0;
+      transition: opacity .22s ease;
+    }
+    .modal.open .modal-backdrop{opacity:1;}
+    .modal-dialog{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-48%) scale(.98);
+      width: min(860px, calc(100vw - 24px));
+      border-radius: calc(var(--radius) + 6px);
+      border: 1px solid rgba(238,242,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity .22s ease, transform .22s ease;
+    }
+    .modal.open .modal-dialog{
+      opacity: 1;
+      transform: translate(-50%,-50%) scale(1);
+    }
+    .modal-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 14px 14px 12px;
+      border-bottom: 1px solid rgba(238,242,255,.12);
+      background: rgba(9,12,24,.35);
+      backdrop-filter: blur(10px) saturate(140%);
+    }
+    .modal-title{
+      display:flex; align-items:center; gap:10px;
+      min-width: 0;
+    }
+    .modal-title strong{
+      font-size: 14px;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .modal-badge{
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(238,242,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(238,242,255,.75);
+      white-space: nowrap;
+    }
+    .modal-close{
+      border: 1px solid rgba(238,242,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(238,242,255,.92);
+      border-radius: 12px;
+      width: 38px;
+      height: 38px;
+      cursor:pointer;
+      font-weight: 900;
+      transition: transform .15s ease, background .15s ease;
+    }
+    .modal-close:hover{transform: translateY(-1px); background: rgba(255,255,255,.10);}
+    .modal-body{
+      padding: 18px;
+      display:grid;
+      gap: 14px;
+    }
+    .modal-hero{
+      border-radius: 18px;
+      border: 1px solid rgba(238,242,255,.14);
+      background:
+        radial-gradient(800px 360px at 15% 20%, rgba(34,211,238,.18), transparent 60%),
+        radial-gradient(800px 360px at 85% 20%, rgba(124,58,237,.20), transparent 60%),
+        rgba(255,255,255,.05);
+      padding: 16px;
+    }
+    .modal-hero h3{margin:0 0 6px; font-size: 18px; letter-spacing: -0.02em;}
+    .modal-hero p{margin:0; color: rgba(238,242,255,.74); line-height: 1.9; font-size: 14px;}
+    .modal-grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
+    }
+    @media (max-width: 860px){
+      .modal-grid{grid-template-columns:1fr;}
+    }
+    .panel{
+      border-radius: 18px;
+      border: 1px solid rgba(238,242,255,.14);
+      background: rgba(255,255,255,.05);
+      padding: 14px;
+    }
+    .panel h4{
+      margin:0 0 10px;
+      font-size: 13px;
+      color: rgba(238,242,255,.90);
+      letter-spacing: .01em;
+    }
+    .panel ul{
+      margin:0;
+      padding-left: 18px;
+      color: rgba(238,242,255,.72);
+      line-height: 1.9;
+      font-size: 13px;
+    }
+    .panel .chips{margin: 8px 0 0}
+    .modal-actions{
+      display:flex; flex-wrap:wrap; gap: 10px;
+      padding-top: 4px;
+    }
+    .modal-actions .btn{box-shadow:none}
+    .kbd{
+      font-size: 11px;
+      color: rgba(238,242,255,.70);
+      border: 1px solid rgba(238,242,255,.14);
+      background: rgba(255,255,255,.06);
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
       .bg{animation:none}
       .hero::after{animation:none}
       .reveal{transition:none}
-      .btn, .mini-btn, .card, .nav a{transition:none}
-      .spotlight{opacity:0}
+      .btn, .mini-btn, .card, .nav a, .modal-backdrop, .modal-dialog{transition:none}
     }
   </style>
 </head>
@@ -577,7 +691,6 @@
   <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
   <div class="bg" aria-hidden="true"></div>
   <div class="grid-overlay" aria-hidden="true"></div>
-  <div class="spotlight" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
 
   <header>
@@ -638,7 +751,7 @@
             <div class="kpi">
               <div class="row"><span>現在</span><strong>Web制作学習中</strong></div>
               <div class="row"><span>更新方法</span><strong>ブランチ→PR→マージ</strong></div>
-              <div class="row"><span>次の目標</span><strong>“体験”のあるUIへ</strong></div>
+              <div class="row"><span>次の目標</span><strong>作品詳細の体験を作る</strong></div>
               <div class="row"><span>連絡</span><strong>下のContactへ</strong></div>
             </div>
 
@@ -660,38 +773,59 @@
       <section id="works" class="reveal" aria-label="作品">
         <div class="sec-title">
           <h2>Works</h2>
-          <p>小さく作って、PRで改善していく</p>
+          <p>小さく作って、PRで改善していく（クリックで詳細）</p>
         </div>
 
         <div class="grid">
-          <article class="card tilt reveal">
+          <article class="card tilt reveal"
+            role="button" tabindex="0"
+            data-project="A"
+            data-title="Project A：自己紹介LP"
+            data-subtitle="このページ / index.html 1枚"
+            data-desc="このページ自体がプロジェクト。見た目・構造・動きの“体験”を磨きながら、PR運用で改善を積み上げます。"
+            data-tags="HTML,CSS,JavaScript,GitHub PR"
+          >
             <h3>Project A：自己紹介LP</h3>
             <p>このページ。見た目と構造を整えつつ、公開しながら改善を続けます。</p>
             <div class="meta">
               <span class="pill">HTML</span><span class="pill">CSS</span><span class="pill">JS</span>
             </div>
-            <div class="small">次の改善：作品詳細ページ（モーダル）を追加</div>
-            <div class="cta">詳細 →</div>
+            <div class="small">次の改善：作品詳細（モーダル） / 配色 / 余白</div>
+            <div class="cta">詳細を見る →</div>
           </article>
 
-          <article class="card tilt reveal">
+          <article class="card tilt reveal"
+            role="button" tabindex="0"
+            data-project="B"
+            data-title="Project B：料金表 + FAQ"
+            data-subtitle="カードUI / アコーディオン"
+            data-desc="“よくあるWebサイトの基本”を高品質に作る練習。料金表カードとFAQの気持ちいい開閉で、UIの基礎体力を固めます。"
+            data-tags="UI,Accordion,Responsive"
+          >
             <h3>Project B：料金表 + FAQ</h3>
             <p>カードUI・アコーディオン・レスポンシブの練習用に作る予定。</p>
             <div class="meta">
               <span class="pill">UI</span><span class="pill">Accordion</span><span class="pill">Responsive</span>
             </div>
-            <div class="small">予定：FAQを“気持ちいい開閉”に</div>
-            <div class="cta">詳細 →</div>
+            <div class="small">予定：次のPRで追加</div>
+            <div class="cta">詳細を見る →</div>
           </article>
 
-          <article class="card tilt reveal">
+          <article class="card tilt reveal"
+            role="button" tabindex="0"
+            data-project="C"
+            data-title="Project C：ToDoミニアプリ"
+            data-subtitle="状態管理 / ローカル保存"
+            data-desc="追加・削除・完了・フィルタなどの基本動作で、DOM操作と状態管理の感覚を掴みます。ローカル保存も入れて“アプリ感”を出す。"
+            data-tags="DOM,Events,State,LocalStorage"
+          >
             <h3>Project C：ToDoミニアプリ</h3>
             <p>追加/削除/完了/フィルタ。JSの基礎と状態管理の練習。</p>
             <div class="meta">
               <span class="pill">DOM</span><span class="pill">Events</span><span class="pill">State</span>
             </div>
-            <div class="small">予定：ローカル保存 + アニメーション</div>
-            <div class="cta">詳細 →</div>
+            <div class="small">予定：フォームとローカル保存</div>
+            <div class="cta">詳細を見る →</div>
           </article>
         </div>
       </section>
@@ -703,7 +837,7 @@
         </div>
 
         <div class="grid" style="grid-template-columns: 1fr;">
-          <div class="card reveal">
+          <div class="card reveal" style="cursor:default">
             <div>
               <strong style="color:rgba(238,242,255,.95)">基礎</strong><br/>
               <div class="meta" style="margin-top:10px;">
@@ -718,9 +852,9 @@
             <div style="margin-top:10px;">
               <strong style="color:rgba(238,242,255,.95)">次にやること（おすすめ順）</strong>
               <ol style="margin:10px 0 0; padding-left:18px; color:rgba(238,242,255,.72); line-height:1.95;">
-                <li>Worksに「詳細モーダル」追加（演出が跳ねる）</li>
-                <li>FAQ（アコーディオン）追加</li>
-                <li>ToDoを別ページ or 1ページ内に追加</li>
+                <li>Project B：料金表 + FAQ（アコーディオン）</li>
+                <li>Project C：ToDo（ローカル保存）</li>
+                <li>プロフィール文の磨き込み（短く強く）</li>
               </ol>
             </div>
           </div>
@@ -752,20 +886,61 @@
     </main>
   </div>
 
+  <!-- Modal -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div class="modal-title">
+          <strong id="modalTitle">Project</strong>
+          <span class="modal-badge" id="modalSubtitle">—</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="kbd" aria-hidden="true">ESC</span>
+          <button class="modal-close" id="modalClose" type="button" aria-label="閉じる">✕</button>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-hero">
+          <h3 id="modalHeroTitle">—</h3>
+          <p id="modalDesc">—</p>
+        </div>
+
+        <div class="modal-grid">
+          <div class="panel">
+            <h4>このプロジェクトで狙うこと</h4>
+            <ul id="modalGoals">
+              <li>UIを“気持ちいい体験”にする</li>
+              <li>PR運用で小さく改善を積み上げる</li>
+              <li>読みやすさ（余白・階層・コントラスト）を整える</li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <h4>Tech</h4>
+            <div class="chips" id="modalTags"></div>
+            <div style="margin-top:12px; color: rgba(238,242,255,.72); font-size: 13px; line-height:1.8;">
+              <div><strong style="color:rgba(238,242,255,.92)">次の一手</strong></div>
+              <div id="modalNext">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn primary" id="copyProjectBtn" type="button">このプロジェクト名をコピー</button>
+          <button class="btn" id="closeProjectBtn" type="button">閉じる</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast" role="status" aria-live="polite">コピーしました</div>
 
   <script>
     // Year
     document.getElementById("year").textContent = String(new Date().getFullYear());
-
-    // Spotlight cursor
-    const root = document.documentElement;
-    window.addEventListener("mousemove", (e) => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      root.style.setProperty("--mx", x + "%");
-      root.style.setProperty("--my", y + "%");
-    }, { passive: true });
 
     // Progress bar
     const bar = document.getElementById("progressBar");
@@ -797,11 +972,12 @@
       }
     }
 
+    // Copy buttons
     document.getElementById("copyUrlBtn").addEventListener("click", () => copyText(location.href, "ページURLをコピーしました"));
     document.getElementById("copyUrlBtnTop").addEventListener("click", () => copyText(location.href, "ページURLをコピーしました"));
     document.getElementById("copyEmailBtn").addEventListener("click", () => copyText("you@example.com", "メールアドレスをコピーしました"));
 
-    // Ripple on buttons
+    // Ripple on buttons/links
     function attachRipple(el){
       el.addEventListener("click", (e) => {
         const rect = el.getBoundingClientRect();
@@ -824,20 +1000,17 @@
         }
       }
     }, { threshold: 0.12 });
-
     document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
     // Active nav on scroll
     const navLinks = Array.from(document.querySelectorAll(".nav a[data-nav]"));
     const sections = ["works","skills","contact"].map(id => document.getElementById(id));
-
     const ioNav = new IntersectionObserver((entries) => {
       const visible = entries.filter(e => e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
       if(!visible) return;
       const id = visible.target.id;
       navLinks.forEach(a => a.classList.toggle("active", a.dataset.nav === id));
     }, { rootMargin: "-40% 0px -55% 0px", threshold: [0.12, 0.22, 0.35] });
-
     sections.forEach(s => s && ioNav.observe(s));
 
     // Card tilt + inner highlight position
@@ -845,13 +1018,10 @@
     const maxTilt = 7;
     cards.forEach(card => {
       let rAF = null;
-
       function onMove(ev){
         const rect = card.getBoundingClientRect();
         const x = (ev.clientX - rect.left) / rect.width;
         const y = (ev.clientY - rect.top) / rect.height;
-
-        // for glow position
         card.style.setProperty("--cx", (x * 100).toFixed(1) + "%");
         card.style.setProperty("--cy", (y * 100).toFixed(1) + "%");
 
@@ -864,14 +1034,121 @@
             `perspective(900px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateY(-2px)`;
         });
       }
-
       function onLeave(){
         if(rAF) cancelAnimationFrame(rAF);
         card.style.transform = "";
       }
-
       card.addEventListener("mousemove", onMove);
       card.addEventListener("mouseleave", onLeave);
+    });
+
+    // ===== Modal logic =====
+    const modal = document.getElementById("modal");
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const modalClose = document.getElementById("modalClose");
+    const closeProjectBtn = document.getElementById("closeProjectBtn");
+    const copyProjectBtn = document.getElementById("copyProjectBtn");
+
+    const modalTitle = document.getElementById("modalTitle");
+    const modalSubtitle = document.getElementById("modalSubtitle");
+    const modalHeroTitle = document.getElementById("modalHeroTitle");
+    const modalDesc = document.getElementById("modalDesc");
+    const modalTags = document.getElementById("modalTags");
+    const modalNext = document.getElementById("modalNext");
+
+    let lastFocus = null;
+    let currentProjectName = "";
+
+    const nextByProject = {
+      "A": "文章を短く強く / Worksに実画像 or スクショを追加",
+      "B": "FAQの開閉を“気持ちいい”アニメに（height+opacity）",
+      "C": "LocalStorageで保存 + フィルタ/検索を追加"
+    };
+
+    function openModalFromCard(card){
+      lastFocus = document.activeElement;
+
+      const title = card.dataset.title || "Project";
+      const subtitle = card.dataset.subtitle || "—";
+      const desc = card.dataset.desc || "—";
+      const tags = (card.dataset.tags || "").split(",").map(s => s.trim()).filter(Boolean);
+      const key = card.dataset.project || "";
+
+      currentProjectName = title;
+
+      modalTitle.textContent = title;
+      modalSubtitle.textContent = subtitle;
+      modalHeroTitle.textContent = title;
+      modalDesc.textContent = desc;
+      modalNext.textContent = nextByProject[key] || "小さく改善（PRで更新）";
+
+      // tags
+      modalTags.innerHTML = "";
+      for(const t of tags){
+        const span = document.createElement("span");
+        span.className = "pill";
+        span.textContent = t;
+        modalTags.appendChild(span);
+      }
+
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+
+      // focus close
+      window.setTimeout(() => modalClose.focus(), 0);
+    }
+
+    function closeModal(){
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+
+      if(lastFocus && typeof lastFocus.focus === "function"){
+        lastFocus.focus();
+      }
+    }
+
+    document.querySelectorAll(".card[data-title]").forEach(card => {
+      card.addEventListener("click", () => openModalFromCard(card));
+      card.addEventListener("keydown", (e) => {
+        if(e.key === "Enter" || e.key === " "){
+          e.preventDefault();
+          openModalFromCard(card);
+        }
+      });
+    });
+
+    modalBackdrop.addEventListener("click", closeModal);
+    modalClose.addEventListener("click", closeModal);
+    closeProjectBtn.addEventListener("click", closeModal);
+
+    window.addEventListener("keydown", (e) => {
+      if(e.key === "Escape" && modal.classList.contains("open")){
+        closeModal();
+      }
+      // very small focus trap (Tab stays inside dialog)
+      if(e.key === "Tab" && modal.classList.contains("open")){
+        const focusables = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+        const list = Array.from(focusables).filter(el => !el.disabled && el.offsetParent !== null);
+        if(list.length === 0) return;
+
+        const first = list[0];
+        const last = list[list.length - 1];
+
+        if(e.shiftKey && document.activeElement === first){
+          e.preventDefault();
+          last.focus();
+        }else if(!e.shiftKey && document.activeElement === last){
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    });
+
+    copyProjectBtn.addEventListener("click", () => {
+      if(!currentProjectName) return;
+      copyText(currentProjectName, "プロジェクト名をコピーしました");
     });
   </script>
 </body>
